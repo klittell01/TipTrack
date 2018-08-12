@@ -1,58 +1,30 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import React, {Component} from 'react';
+import {AppRegistry, Text, View, StyleSheet} from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import DataFetch from './app/components/DataFetch.js'
+import Nav from './app/components/Nav.js'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+export default class MyNewApp extends Component{
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          come by to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
+    renderScene(route, navigator){
+        switch(route.id){
+            case 'DataFetch':
+                return(<DataFetch navigator = {navigator} title = "data Fetch" />)
+            case 'Nav':
+                return(<Nav user = {route.user} navigator = {navigator} title = "nav" />)
+        }
+    }
+
+  render(){
+    return(
+        <Navigator
+            initialRoute = {{id: 'DataFetch'}}
+            renderScene = {this.renderScene}
+            configureScreen = {(route, routeStack) =>navigator.SceneConfigs.FloatFromBottom}
+        />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+AppRegistry.registerComponent('MyNewApp', () => MyNewApp);
