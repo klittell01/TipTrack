@@ -6,26 +6,17 @@ export default class Day extends Component{
     constructor(props){
         super(props);
         this.state = {
-            selectedDate: this.props.myDate
+            day: this.props.navigation.getParam('day'),
+            month: this.props.navigation.getParam('month'),
+            year: this.props.navigation.getParam('year'),
         }
     }
 
-    CalendarBtn(){
-        this.props.navigator.push({
-            id: "CalendarView"
-        })
-    }
 
     render(){
         return(
             <View>
-                <Text>this is the clicked day: {this.state.selectedDate.year}</Text>
-                <Button
-                    onPress={() => {this.CalendarBtn()}}
-                    title="Back to Calendar"
-                    color="#841584"
-                    accessibilityLabel="Learn more about this purple button"
-                />
+                <Text>{"this is the clicked day: " + this.state.day}</Text>
             </View>
         )
     }
