@@ -7,7 +7,8 @@ import {AppRegistry,
     ListView,
     Button,
     Picker,
-    AsyncStorage,}
+    AsyncStorage,
+    Alert,}
 from 'react-native';
 
 export default class Day extends Component{
@@ -21,6 +22,7 @@ export default class Day extends Component{
             cashTips: '',
             creditTips: '',
             tipout: '',
+            tipout2: '87',
             tipin: '',
             pickerValue: '',
             myPosition: '',
@@ -37,16 +39,13 @@ export default class Day extends Component{
         }
     };
 
-    async StoreData(){
-        try {
-            await AsyncStorage.setItem('keydate', 'myObjStr')
-        } catch (error){
-            console.log(error.message);
-        }
-    }
+// // TODO:  add the fetching data function and fill the data in the correct spots
 
-    CompileData(){
-        //keydate = year + month + day
+
+
+
+    CompileData = () => {
+        let keydate = this.state.year + this.state.month + this.state.day
         const myObj = {
             myPosition: this.state.myPosition,
             cashTips: this.state.cashTips,
@@ -54,9 +53,53 @@ export default class Day extends Component{
             tipout: this.state.tipout,
             tipin: this.state.tipin,
         }
-        //const myObjStr = JSON.stringify(myObj)
-        this.StoreData()
+        console.log('step one');
+        const myObjStr = JSON.stringify(myObj)
+        console.log(myObjStr);
+        AsyncStorage.setItem('keydate', myObjStr)
+        console.log('step one');
+        /*const StoreData = async (keydate, myObjStr) => {
+            try {
+                console.log("test 1");
+                await AsyncStorage.setItem(keydate, myObjStr)
+                console.log("test 2");
+            } catch (error){
+                console.log("test error");
+                console.log(error.message);
+            }
+        }
+        */
+    }
 
+    RetrieveData = async() => {
+        let keydate = this.state.year + this.state.month + this.state.day
+        console.log('this is the first part');
+        Alert.alert('well well well' + myParsedData.tipin)
+    //    let myData = await AsyncStorage.getItem('keydate');
+    //    console.log('and the second part');
+    //    const myParsedData = JSON.parse(myData)
+    //    console.log('well well well ' + myParsedData.tipin);
+        /*
+        const GetData = async (keydate) => {
+            console.log('what goes here?');
+            try {
+                console.log('first');
+                const myData = await AsyncStorage.getItem('keydate');
+                console.log('second');
+                let key = '' + keydate;
+                if (myData !== null) {
+                    // We have data!!
+
+                    const myParsedData = JSON.parse(myData)
+                    this.setState({tipout2: myParsedData.tipout})
+                    //return myParsedData;
+                }
+            } catch (error) {
+                console.log('and less good things here');
+                // Error retrieving data
+            }
+        }
+        */
     }
 
 
@@ -111,11 +154,18 @@ export default class Day extends Component{
                     </View>
                 }
                 <Button
-                    onPress={this.CompileData()}
+                    onPress={this.CompileData.bind(this)}
                     title="Save Changes"
                     color="#841584"
                     accessibilityLabel="click this button"
                 />
+                <Button
+                    onPress={this.RetrieveData.bind(this)}
+                    title="Load Changes"
+                    color="#841584"
+                    accessibilityLabel="click this button"
+                />
+            <Text>my saved tipout is: {this.state.tipout2}</Text>
             </View>
         )
     }
